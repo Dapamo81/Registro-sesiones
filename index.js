@@ -2,11 +2,12 @@
 
 const express = require("express");
 const app = express();
-require("dotnet").config({path:".env/.env"});
-const bcrypt = require("bcrypt.js");
+require("dotenv").config({path:"./env/.env"});
+const bcrypt = require("bcryptjs");
 const session = require("express-session"); // solo ha nivel de desarrollo
+const db = require("./database/db");
 
-//9 7 Definir o configurar la sesion
+//9 7 Definir o configurar la sesion 
 app.use(
     session({
         secret:"secret", // clave para cifrar la sesion
@@ -23,7 +24,7 @@ app.use(express.json());
 
 //9 5 Configurar carpeta public
 
-app.use("/resource",express.static("public"));
+app.use("/resources",express.static("public"));
 
 //9 6 Definir el motor de vistas
 
@@ -34,8 +35,52 @@ app.set("view engine", "ejs");
 //9 4 definimos una ruta de entrada
 
 app.get("/",(req,res) => {
-    res.send("Hello World");
+    res.render("index",{user:"Dani"});
 });
+
+app.get("/login",(req,res) => {
+    res.render("login");
+});
+
+app.get("/register",(req,res) => {
+    res.render("register");
+});
+
+//9 8 definimos las rutas post
+
+app.post("/register", async(req,res)=>{
+    const user = req.body.user;
+    const name = req.body.name;
+    const rol = req.body.rol;
+    const pass = req.body.pass;
+    const passwordHash = await bcrypt.hash(pass,8);
+    
+    db.query(
+        "Insert INTO usuarios SET?",
+        {
+            Usuario: user,
+            Nombre: name,
+            rol: rol,
+            pass: passwordHash,
+        },
+        (error,results) => {
+            if(error){
+                console.log(error);
+            }else{
+                res.render("register",{
+                    alert:true,
+                    alertTitle: "Register",
+                    alertMessage:"El usuario se ha registrado correctamente",
+                    alertIcon:"success",
+                    showConfirmButton:false,
+                    timer:1500,
+                    ruta:"/",
+                })
+            }
+        }
+        )
+})
+
 
 //9 2 Creamos el servidor o el puerto de escucha
 
