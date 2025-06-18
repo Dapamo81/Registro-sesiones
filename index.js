@@ -6,6 +6,8 @@ require("dotenv").config({path:"./env/.env"});
 const bcrypt = require("bcryptjs");
 const session = require("express-session"); // solo ha nivel de desarrollo
 const db = require("./database/db");
+// const expressLayouts = require("express-ejs-layouts");
+const Swal = require('sweetalert2');
 
 //9 7 Definir o configurar la sesion 
 app.use(
@@ -35,7 +37,12 @@ app.set("view engine", "ejs");
 //9 4 definimos una ruta de entrada
 
 app.get("/",(req,res) => {
-    res.render("index",{user:"Dani"});
+    if (req.session.loggedin){
+        res.render("index",{user: req.session.name, login: true});
+    }else{
+        res.render("index",{user: "Debe iniciar sessión", login: false});
+    }
+    // res.render("index",{user:"Dani"});
 });
 
 app.get("/login",(req,res) => {
@@ -46,7 +53,8 @@ app.get("/register",(req,res) => {
     res.render("register");
 });
 
-//9 8 definimos las rutas post
+//9 8 definimos las rutas de post
+//  definimos las rutas insert
 
 app.post("/register", async(req,res)=>{
     const user = req.body.user;
@@ -81,6 +89,101 @@ app.post("/register", async(req,res)=>{
         )
 })
 
+// definimos la ruta de login
+app.post("/auth", async (req, res) => {
+    const user = req.body.user;
+    const pass = req.body.pass;
+
+    if (user && pass){
+        db.query(
+            "SELECT * FROM usuarios WHERE usuario = ? ", 
+            [user], 
+            async(error,results) => {
+                if(
+                    results.length == 0 
+                    || !(await bcrypt.compare(pass, results[0].pass))){
+                        // res.send(
+                        //      "El usuario no existe o la contraseña es incorrecta"
+                        // );
+                        res.render("login" , {
+                            alert: true ,
+                            alertTitle: "Error" ,
+                            alertMessage: "El usuario no existe o la contraseña es incorrecta" ,
+                            alertIcon: "error" ,
+                            showConfirmButton: true ,
+                            timer: false ,
+                            ruta: "login" ,
+                            login: false,
+                        })
+                    }else{
+                        req.session.loggedin =true;
+                        req.session.name = results[0].nombre;
+                        // res.send("El usuario se ha logeado correctamente");
+                        res.render("login" , {
+                            alert: true,
+                            alertTitle: "Login" ,
+                            alertMessage:"El usuario se ha logeado correctamente",
+                            alertIcon:"success",
+                            showConfirmButton: false,
+                            timer:2500,
+                            ruta:"",
+                            login: true,
+                        })
+                    }
+
+        });
+    }else{
+         res.render("login" , {
+                            alert: true,
+                            alertTitle: "Login" ,
+                            alertMessage:"Introduzca su usuario y contraseña",
+                            alertIcon:"success",
+                            showConfirmButton: false,
+                            timer:2500,
+                            ruta:"",
+                            login: false,
+                        })
+
+    }
+});
+
+// app.post("/auth", async (req, res) => {
+//     const user = req.body.user;
+//     const pass = req.body.pass;
+
+//     if (user && pass){
+//         db.query(
+//             "SELECT * FROM usuarios WHERE usuario = ?", 
+//             [user], 
+//             async (error, results) => {
+//                 if (error) {
+//                     console.error('Error en la consulta:', error);
+//                     return res.status(500).send('Error en la base de datos');
+//                 }
+//                 if (!results || results.length === 0) {
+//                     // No se encontró ningún usuario
+//                     return res.send("El usuario no existe o la contraseña es incorrecta");
+//                 }
+//                 // Verificar contraseña
+//                 if (!(await bcrypt.compare(pass, results[0].pass))) {
+//                     return res.send("El usuario no existe o la contraseña es incorrecta");
+//                 }
+//                 // Usuario y contraseña correctos
+//                 res.send("El usuario se ha logeado correctamente");
+//             }
+//         );
+//     } else {
+//         res.send("Por favor, ingrese usuario y contraseña");
+//     }
+// });
+
+// Ruta de cierre de sesion
+
+    app.get("/logout", (req, res) => {
+        req.session.destroy(() => {
+            res.redirect("/");
+        });
+    });
 
 //9 2 Creamos el servidor o el puerto de escucha
 

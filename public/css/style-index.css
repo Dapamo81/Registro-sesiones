@@ -1,0 +1,38 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Estilo para el cuerpo de la página */
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+/* Estilo para el encabezado principal */
+h1 {
+  font-size: 2.5em;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Estilo para el encabezado secundario */
+h2 {
+  font-size: 1.5em;
+  color: #34495e;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Opcional: agregar un contenedor para centrar el contenido */
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

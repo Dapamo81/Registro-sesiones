@@ -35,21 +35,25 @@
         </form>
     </div>
 
- <script src='https://cdn.jsdelivr.net/npm/sweetalert2@10'></script>
+<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
 
-    <% if (typeof alert !== "undefined"){ %>
-        <script>
-            swal.fire({
+<% if (typeof alert !== "undefined") { %>
+    <script>
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
                 title: '<%= alertTitle %>',
                 text: '<%= alertMessage %>',
                 icon: '<%= alertIcon %>',
-                showConfirmButton: '<%= showConfirmButton %>',
-                timer: '<%= timer %>',
-            }).then(()=>{
-                window.location = '<%= ruta %>'
-            })
-        </script>
-    <% } %>
+                showConfirmButton: <%= showConfirmButton %>,
+                timer: <%= timer %>
+            }).then(() => {
+                window.location = '/<%= ruta %>';
+            });
+        }
+    </script>
+<% } %>
+
+
 
 
 </body>
