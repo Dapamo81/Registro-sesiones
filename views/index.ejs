@@ -1,23 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-     <meta charset="UTF-8">
-    <meta http-equiv ="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Practica_2 De NodeJS</title>
-    <link href = "resources/css/style-index.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-    <h1>Página de incio</h1>
-    <h2>Bienvenido:
+    <section class="container">
+        <h2>Bienvenido: 
         <% if (login){ %>
             <p>El usuario conectado es: <%= user %> </p>
             <a href="/logout" class="login">Cerra sesión</a>
         <% } else { %>
             <p><%= user %></p> 
             <a href="/login" class="login">Iniciar sesión</a>
-        <% } %> </h2>
-</body>
+        <% } %> 
+        </h2>
 
-</html>
+        <%- include('partials/popover') %>
+
+        
+
+    </section>

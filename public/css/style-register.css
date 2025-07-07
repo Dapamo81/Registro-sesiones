@@ -1,7 +1,7 @@
 /* Estilos globales */
 body {
     height: 100vh;
-    display: flex;
+    /* display: flex; */
     justify-content: center;
     align-items: center;
     background: linear-gradient(135deg, #74ebd5, #ACB6E5);
@@ -11,6 +11,7 @@ body {
 /* Contenedor del formulario */
 .register-form {
     background-color: #ffffff;
+    margin: 15px auto;
     padding: 40px 30px;
     border-radius: 10px;
     box-shadow: 0 8px 16px rgba(0,0,0,0.2);

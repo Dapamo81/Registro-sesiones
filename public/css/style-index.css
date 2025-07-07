@@ -8,11 +8,16 @@
 /* Estilo para el cuerpo de la página */
 body {
     height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
     background: linear-gradient(135deg, #74ebd5, #ACB6E5);
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+.container {
+    display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 /* Estilo para el encabezado principal */
 h1 {
@@ -26,13 +31,55 @@ h1 {
 h2 {
   font-size: 1.5em;
   color: #34495e;
-  margin-top: 10px;
+  margin-top: 20px;
   text-align: center;
 }
 
+button[type="submit"] {
+    width: 100%;
+    padding: 14px 20px;
+    background-color: #74ebd5;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button[type="submit"]:hover {
+    background-color: #5dd1c4;
+    transform: scale(1.02);
+}
+
+/* Estilos generales para la navbar */
+.navbar {
+  background-color: #a7a5a5; /* Fondo blanco, puedes cambiarlo */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* sombra suave para profundidad */
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Logo y marca */
+.navbar .navbar-brand {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+}
+
+
+
+
+
+
+
 /* Opcional: agregar un contenedor para centrar el contenido */
-body {
+/* body {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
+} */

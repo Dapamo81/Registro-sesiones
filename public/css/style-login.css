@@ -8,7 +8,7 @@
 /* Estilo del cuerpo, centrando el formulario */
 body {
     height: 100vh;
-    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background: linear-gradient(135deg, #74ebd5, #ACB6E5);
@@ -18,6 +18,7 @@ body {
 /* Estilo del contenedor del formulario */
 .login-form {
     background-color: #ffffff;
+    margin: 15px;
     padding: 40px 30px;
     border-radius: 10px;
     box-shadow: 0 8px 16px rgba(0,0,0,0.2);
