@@ -1,4 +1,8 @@
 
+<%- include ('partials/head') %>
+
+<%- include ('partials/header') %>
+
     <section class="container">
         <h2>Bienvenido: 
         <% if (login){ %>
@@ -10,8 +14,8 @@
         <% } %> 
         </h2>
 
-        <%- include('partials/popover') %>
-
-        
+        <%- include('partials/popover') %> 
 
     </section>
+
+<%- include ('partials/footer') %>
