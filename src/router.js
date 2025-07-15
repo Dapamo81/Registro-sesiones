@@ -1,7 +1,7 @@
 //9 1 Iniciar las librerias
 
 const express = require("express");
-const router = express();
+const router = express.Router();
 const bcrypt = require("bcryptjs");
 const db = require("../database/db");
 const {body, validation, validationResult} = require("express-validator");
@@ -27,30 +27,85 @@ router.get("/",(req,res) => {
 });
 
 router.get("/login",(req,res) => {
-    res.render("login",{ titulo: "Login" });
+    if (req.session.loggedin){
+        res.render("login",{
+            login: true,
+        });
+    }else{
+        res.render("login",{
+            login: false,
+        });
+    }
 });
 
 router.get("/register",(req,res) => {
-    res.render("register", { titulo:"Registro" });
+    if (req.session.loggedin){ 
+        res.render("register",{
+            login: true,
+        });
+    } else {
+        res.render("register",{
+            login: false,
+        });
+    }
 });
 
 router.get("/admin",(req,res) => {
     // res.render("admin");
-    db.query("SELECT * FROM productos", (error, results) => {
-        if(error){
-            throw error;
-        } else {
-            // console.log(results);
-            res.render("admin", {
-                productos: results,               
-            });
-        }
-});
+     if (req.session.loggedin){
+         db.query("SELECT * FROM productos", (error, results) => {
+             if(error){
+                 throw error;
+             } else {
+                 // console.log(results);
+                 res.render("admin", {
+                     productos: results,
+                     login: true,
+                     rol: req.session.rol,             
+                 });
+             }
+        });
+    }else{
+        res.render("admin",{
+            msg: "Acceso restringido, por favor iniciar sessión", 
+            login: false, 
+       
+        });
+    }
+    // res.render("index",{user:"Dani"});
 });
 
 router.get("/create", (req, res) => {
     res.render("create");
+    
 });
+
+router.get("/edit/:ref", (req, res) => {
+    const ref = req.params.ref;
+    console.log(ref);
+    db.query("SELECT * FROM productos WHERE referencia= ?", [ref], (error, results) => {
+        if(error) {
+            throw error; 
+        }else{
+            res.render("edit", {
+                producto: results[0],
+            });
+        }
+        }
+    );
+})
+
+router.get("/delete/:ref", (req, res) => {
+    const ref = req.params.ref;
+    db.query("DELETE FROM productos WHERE referencia = ?", [ref], (error, results) => {
+        if(error) {
+            throw error;
+        } else {
+            res.redirect("/admin");
+        }
+    }
+    );
+})
 
 //9 8 definimos las rutas de post
 //  definimos las rutas insert
@@ -160,6 +215,7 @@ router.post("/auth", async (req, res) => {
                     }else{
                         req.session.loggedin =true;
                         req.session.name = results[0].nombre;
+                        req.session.rol = results[0].rol;
                         // res.send("El usuario se ha logeado correctamente");
                         res.render("login" , {
                             alert: true,
@@ -200,5 +256,6 @@ router.post("/auth", async (req, res) => {
     });
 
 router.post("/save",crud.save); 
+router.post("/update",crud.update); 
 
 module.exports = router;

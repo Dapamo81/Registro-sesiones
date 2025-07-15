@@ -15,10 +15,12 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/register">Registro</a>
-                </li>           
-                 <li class="nav-item">
-                    <a class="nav-link" href="/admin">Admin</a>
-                </li>  
+                </li>
+                <% if (login) { %>         
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin">Admin</a>
+                    </li>
+                <% } %>
             </ul>
         </div>
         </div>

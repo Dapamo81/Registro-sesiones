@@ -24,3 +24,29 @@ exports.save = (req, res) => {
         } 
     );
 };
+
+exports.update = (req, res) => {
+    const ref = req.body.referencia;
+    const nombre = req.body.nombre;
+    const precio = req.body.precio;
+    const stock = req.body.stock;
+
+    db.query(
+        "UPDATE productos SET ? WHERE referencia = ?",[{
+            nombre:nombre,
+            precio:precio,
+            stock:stock
+        },
+        ref
+        ], 
+        (error, results) => {
+            if(error) {
+                console.log(error);
+                res.redirect("/admin");
+            } else {
+                console.log("Producto actualizado correctamente");
+                res.redirect("/admin");
+            }
+        }
+    );
+};
