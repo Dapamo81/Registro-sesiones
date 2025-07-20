@@ -16,6 +16,13 @@ app.use(
     })
 )
 
+// Middleware global para que login y rol estén disponibles en todas las vistas EJS
+app.use((req, res, next) => {
+    res.locals.login = req.session.loggedin || false;
+    res.locals.rol = req.session.rol || null;
+    next();
+});
+
 
 //9 3 Definimos los middlewares
 // app.use(express.urlencoded({ extended : false })); para pasar los datos planos
@@ -38,4 +45,10 @@ app.set("view engine", "ejs");
 
 app.listen(4000, ()=>{
     console.log('Servidor escuchando en puerto http://localhost:4000');
+});
+
+app.use((req, res, next) => {
+    res.locals.login = req.session.loggedin || false;
+    res.locals.rol = req.session.rol || null;
+    next();
 });

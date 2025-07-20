@@ -13,6 +13,7 @@ body {
     align-items: center;
     background: linear-gradient(135deg, #74ebd5, #ACB6E5);
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    overflow-y: auto;
 }
 
 /* Estilo del contenedor del formulario */

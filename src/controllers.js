@@ -31,32 +31,6 @@ exports.saveCursos = (req, res) => {
     );
 };
 
-exports.saveUser = (req, res) => {
-    const nombre =req.body.nombre;
-    const precio = req.body.precio;
-    const stock = req.body.stock;
-
-    // console.log(nombre+ " "+ precio, " "+ stock);
-    db.query("INSERT INTO productos SET ?", 
-        {
-            nombre:nombre, 
-            precio:precio, 
-            stock:stock
-        }, 
-        (error, results) => {
-            if (error) {
-                console.log(error);
-                res.direct("/admin");
-                
-            }else {
-                console.log("Producto insertado correctamente");
-                res.redirect("/admin");
-            }
-            
-        } 
-    );
-};
-
 exports.updateCursos = (req, res) => {
     const ref = req.body.referencia;
     const titulo = req.body.titulo;
@@ -83,28 +57,65 @@ exports.updateCursos = (req, res) => {
     );
 };
 
-// exports.update = (req, res) => {
-//     const ref = req.body.referencia;
-//     const nombre = req.body.nombre;
-//     const precio = req.body.precio;
-//     const stock = req.body.stock;
+exports.saveUser = (req, res) => {
+    const ref = req.body.id;
+    const usuario = req.body.usuario;
+    const nombre = req.body.nombre;
+    const rol = req.body.rol;
+    const password = req.body.password;
+    const email = req.body.email;
 
-//     db.query(
-//         "UPDATE productos SET ? WHERE referencia = ?",[{
-//             nombre:nombre,
-//             precio:precio,
-//             stock:stock
-//         },
-//         ref
-//         ], 
-//         (error, results) => {
-//             if(error) {
-//                 console.log(error);
-//                 res.redirect("/admin");
-//             } else {
-//                 console.log("Producto actualizado correctamente");
-//                 res.redirect("/admin");
-//             }
-//         }
-//     );
-// };
+    // console.log(nombre+ " "+ precio, " "+ stock);
+    db.query("INSERT INTO usuarios SET ?", 
+        {
+            usuario:usuario,
+            nombre:nombre,
+            rol:rol,
+            password:password,
+            email:email,
+        }, 
+        (error, results) => {
+            if (error) {
+                console.log(error);
+                res.direct("/admin");
+                
+            }else {
+                console.log("Usuario insertado correctamente");
+                res.redirect("/admin");
+            }
+            
+        } 
+    );
+};
+
+
+
+exports.updateUser = (req, res) => {
+    const ref = req.body.id;
+    const usuario = req.body.usuario;
+    const nombre = req.body.nombre;
+    const rol = req.body.rol;
+    const password = req.body.password;
+    const email = req.body.email;
+
+    db.query(
+        "UPDATE usuarios SET ? WHERE id = ?",[{
+            usuario:usuario,
+            nombre:nombre,
+            rol:rol,
+            password:password,
+            email:email,
+        },
+        ref
+        ], 
+        (error, results) => {
+            if(error) {
+                console.log(error);
+                res.redirect("/admin");
+            } else {
+                console.log("Usuario actualizado correctamente");
+                res.redirect("/admin");
+            }
+        }
+    );
+};

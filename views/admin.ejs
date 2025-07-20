@@ -5,14 +5,14 @@
         <% if (login) {%>
             <div class="container my-5">
                 <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
-                    <h2 class="mb-0">Lista de Productos</h2>
+                    <h2 class="mb-0">Lista de Usuarios</h2>
                     <% if (rol == "admin") { %>
                         <a href="/createUser" class="btn btn-outline-primary ms-4"><i class='bx bx-plus-circle bx-md'></i></a>
                         <% } %>
                 </div>
                     
                 <table class="table table-bordered table-hover text-center align-middle">
-                    <thead class="table table-bordered table-striped text-center mt-2">
+                    <thead class="table table-primary table-bordered table-striped text-center mt-2">
                         <tr class="bg-primary text-white">
                             <th scope="col">Referencia</th>
                             <th scope="col">Usuario</th>
@@ -33,11 +33,11 @@
                         <td><%= usuario.email %></td>
                         <td>                              
                             <a
-                                href="/edit/<%=usuario.id %>" 
+                                href="/editUser/<%=usuario.id %>" 
                                 class="btn btn-outline-warning">
                                 <i class='bx bx-edit bx-md'></i>
                             </a>
-                            <a href="/delete/<%=usuario.id %>" 
+                            <a href="/deleteUser/<%=usuario.id %>" 
                                 class="btn btn-outline-danger">
                                 <i class='bx bx-trash bx-md'></i>
                             </a>

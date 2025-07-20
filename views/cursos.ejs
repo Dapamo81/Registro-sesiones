@@ -12,9 +12,11 @@
                 </div>
                     
                 <table class="table table-bordered table-hover text-center align-middle">
-                    <thead class="table table-bordered table-striped text-center mt-2">
+                    <thead class="table table-primary text-white table-bordered table-striped text-center mt-2">
                         <tr class="bg-primary text-white">
-                            <th scope="col">Referencia</th>
+                            <% if (rol == "admin") { %>
+                                <th scope="col">Referencia</th>
+                            <% } %>
                             <th scope="col">Titulo</th>
                             <th scope="col">Descripcion</th>
                             <% if (rol == "admin") { %>
@@ -26,14 +28,15 @@
                 <tbody>
                 <% cursos.forEach((curso) => { %>
                     <tr>
-                        <td><%= curso.referencia %></td>
+                        <% if (rol == "admin") { %>
+                            <td><%= curso.referencia %></td>
+                        <% } %>
                         <td><%= curso.titulo %></td>
                         <td><%= curso.descripcion %></td>                       
-                        <td><%= curso.visibilidad %></td>
                         <% if (rol == "admin") { %>
-                            <td>                                
-                                <a
-                                    href="/editCursos/<%= curso.referencia %>" 
+                            <td><%= curso.visibilidad %></td>
+                            <td class="d-flex justify-content-center gap-2">                                
+                                <a href="/editCursos/<%= curso.referencia %>" 
                                     class="btn btn-outline-warning">
                                     <i class='bx bx-edit bx-md'></i>
                                 </a>

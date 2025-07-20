@@ -138,10 +138,45 @@ router.get("/editCursos/:ref", (req, res) => {
     );
 });
 
+router.get("/editUser/:ref", (req, res) => {
+    const ref = req.params.ref;
+    console.log(ref);
+    db.query(
+        "SELECT * FROM usuarios WHERE id= ?",
+        [ref],
+        (error, results) => {
+            if (error) {
+                throw error;
+            } else {
+                res.render("editUser", {
+                    usuario: results[0],
+                    login: req.session.loggedin,
+                    rol: req.session.rol
+                });
+            }
+        }
+    );
+});
+
 router.get("/delete/:ref", (req, res) => {
     const ref = req.params.ref;
     db.query(
         "DELETE FROM cursos WHERE referencia = ?",
+        [ref],
+        (error, results) => {
+            if (error) {
+                throw error;
+            } else {
+                res.redirect("/cursos");
+            }
+        }
+    );
+});
+
+router.get("/deleteUser/:ref", (req, res) => {
+    const ref = req.params.ref;
+    db.query(
+        "DELETE FROM usuarios WHERE id = ?",
         [ref],
         (error, results) => {
             if (error) {
@@ -168,7 +203,6 @@ router.post(
         body("pass")
             .isLength({ min: 4 })
             .withMessage("El pass debe tener 4 caracteres"),
-        body("rol").notEmpty(),
         body("email")
             .isEmail()
             .withMessage("El email no es válido"),
@@ -188,7 +222,7 @@ router.post(
                 titulo: "Registro",
             });
         } else {
-            const { user, name, pass, rol, email } = req.body;
+            const { user, name, pass, email } = req.body;
             const passwordHash = await bcrypt.hash(pass, 8);
 
             db.query(
@@ -265,6 +299,7 @@ router.post("/auth", async (req, res) => {
                     req.session.name = results[0].nombre;
                     req.session.rol = results[0].rol;
                     // res.send("El usuario se ha logeado correctamente");
+                    
                     res.render("login", {
                         alert: true,
                         alertTitle: "Login",
@@ -303,7 +338,8 @@ router.get("/logout", (req, res) => {
 });
 
 router.post("/saveCursos", crud.saveCursos);
-router.post("/saveUser", crud.saveUser); // para guardar los productos
+router.post("/saveUser", crud.saveUser); 
 router.post("/updateCursos", crud.updateCursos);
+router.post("/updateUser", crud.updateUser); 
 
 module.exports = router;
