@@ -14,14 +14,12 @@
             <label for="name">Nombre</label>
             <input type="text" name="name" placeholder="Ingrese su nombre" 
                 value="<% if(typeof valores !== 'undefined') { %> <%= valores.name %> <% } %>">
+
             <br>
             <label for="rol">Rol:</label>
-            <select name="rol">
-                <option value="admin">Administrador</option>
-                <option value="user">Usuario</option>
-            </select>
             <br>
-
+            <input type="text" name="rol" value="user">
+            
             <label for="pass">Contraseña:</label>
             <input type="password" name="pass" placeholder="Ingrese su contraseña"
                 value="<% if(typeof valores !== 'undefined') { %> <%= valores.pass %> <% } %>">
@@ -29,11 +27,6 @@
             <label for="pass">Email:</label>
             <input type="text" name="email" placeholder="Ingrese su email"
                 value="<% if(typeof valores !== 'undefined') { %> <%= valores.email %> <% } %>">
-
-            <label for="pass">Edad:</label>
-            <input type="text" name="edad" placeholder="Ingrese su edad"
-                value="<% if(typeof valores !== 'undefined') { %> <%= valores.edad %> <% } %>">
-
 
             <div class="button-container">               
                 <a href="/" class="btn-cancel">Cancelar</a>

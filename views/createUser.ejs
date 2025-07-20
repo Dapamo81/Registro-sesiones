@@ -5,16 +5,16 @@
 
     <div class="container mt-4 w-25">
         <div class="card border-secundary">
-        <div class="card-header"> Nuevo Registro de curso</div>
+        <div class="card-header"> Nuevo Registro de usuario</div>
         <div class="card-body">
-            <form action="/saveCursos" method="POST">
+            <form action="/saveUser" method="POST">
                 <div class="mb-3">
-                    <label for="titulo" class="form-label">Titulo</label>
-                    <input type="text" class="form-control" id="titulo" name="titulo" required>
+                    <label for="usuario" class="form-label">Usuario</label>
+                    <input type="text" class="form-control" id="usuario" name="usuario" required>
                 </div>
                 <div class="mb-3">
-                    <label for="descripcion" class="form-label">Descripcion</label>
-                    <input type="text" class="form-control" id="descripcion" name="descripcion" required>
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required>
                 </div>
                 <div class="form-group">
                     <label for="visibilidad" class="form-label">Visibilidad</label>
@@ -25,9 +25,8 @@
                     <button type="submit" class="btn btn-save">Guardar</button>
                     <a href="/admin" class="btn-cancel">Cancelar</a>
                 </div>
-            </form>
-            
-    </div>
+            </form>         
+        </div>
     </div>
 
 <%- include ('partials/footer') %>

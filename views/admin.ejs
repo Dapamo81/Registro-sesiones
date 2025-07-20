@@ -7,42 +7,42 @@
                 <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
                     <h2 class="mb-0">Lista de Productos</h2>
                     <% if (rol == "admin") { %>
-                        <a href="/create" class="btn btn-outline-primary ms-4"><i class='bx bx-plus-circle bx-md'></i></a>
-                    <% } %>
+                        <a href="/createUser" class="btn btn-outline-primary ms-4"><i class='bx bx-plus-circle bx-md'></i></a>
+                        <% } %>
                 </div>
                     
                 <table class="table table-bordered table-hover text-center align-middle">
                     <thead class="table table-bordered table-striped text-center mt-2">
                         <tr class="bg-primary text-white">
                             <th scope="col">Referencia</th>
+                            <th scope="col">Usuario</th>
                             <th scope="col">Nombre</th>
-                            <th scope="col">Precio</th>
-                            <th scope="col">Stock</th>
-                            <% if (rol == "admin") { %>
-                                <th scope="col">Acciones</th>
-                            <% } %>
+                            <th scope="col">Rol</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Acciones</th>
+                    
                         </tr>
                     </thead>
                 </tbody>
-                <% productos.forEach((producto) => { %>
+                <% usuarios.forEach((usuario) => { %>
                     <tr>
-                        <td><%= producto.referencia %></td>
-                        <td><%= producto.nombre %></td>
-                        <td><%= producto.precio %></td>                       
-                        <td><%= producto.stock %></td>
-                        <% if (rol == "admin") { %>
-                            <td>                                
-                                <a
-                                    href="/edit/<%=producto.referencia %>" 
-                                    class="btn btn-outline-warning">
-                                    <i class='bx bx-edit bx-md'></i>
-                                </a>
-                                <a href="/delete/<%= producto.referencia %>" 
-                                    class="btn btn-outline-danger">
-                                    <i class='bx bx-trash bx-md'></i>
-                                </a>
-                            </td>
-                        <% } %>
+                        <td><%= usuario.id %></td>
+                        <td><%= usuario.usuario %></td>
+                        <td><%= usuario.nombre %></td>   
+                        <td><%= usuario.rol %></td>                     
+                        <td><%= usuario.email %></td>
+                        <td>                              
+                            <a
+                                href="/edit/<%=usuario.id %>" 
+                                class="btn btn-outline-warning">
+                                <i class='bx bx-edit bx-md'></i>
+                            </a>
+                            <a href="/delete/<%=usuario.id %>" 
+                                class="btn btn-outline-danger">
+                                <i class='bx bx-trash bx-md'></i>
+                            </a>
+                        </td>
+
                             
                         </tr>
                         

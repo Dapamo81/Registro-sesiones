@@ -1,0 +1,86 @@
+
+<%- include ('partials/head') %>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <%- include ('partials/header') %>
+        <% if (login) {%>
+            <div class="container my-5">
+                <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+                    <h2 class="mb-0">Lista de Cursos</h2>
+                    <% if (rol == "admin") { %>
+                        <a href="/create" class="btn btn-outline-primary ms-4"><i class='bx bx-plus-circle bx-md'></i></a>
+                    <% } %>
+                </div>
+                    
+                <table class="table table-bordered table-hover text-center align-middle">
+                    <thead class="table table-bordered table-striped text-center mt-2">
+                        <tr class="bg-primary text-white">
+                            <th scope="col">Referencia</th>
+                            <th scope="col">Titulo</th>
+                            <th scope="col">Descripcion</th>
+                            <% if (rol == "admin") { %>
+                                <th scope="col">Visibilidad</th>
+                                <th scope="col">Acciones</th>
+                            <% } %>
+                        </tr>
+                    </thead>
+                <tbody>
+                <% cursos.forEach((curso) => { %>
+                    <tr>
+                        <td><%= curso.referencia %></td>
+                        <td><%= curso.titulo %></td>
+                        <td><%= curso.descripcion %></td>                       
+                        <td><%= curso.visibilidad %></td>
+                        <% if (rol == "admin") { %>
+                            <td>                                
+                                <a
+                                    href="/editCursos/<%= curso.referencia %>" 
+                                    class="btn btn-outline-warning">
+                                    <i class='bx bx-edit bx-md'></i>
+                                </a>
+                                <a href="/delete/<%= curso.referencia %>" 
+                                    class="btn btn-outline-danger">
+                                    <i class='bx bx-trash bx-md'></i>
+                                </a>
+                            </td>
+                        <% } %>
+                            
+                    </tr>
+                        
+                <% }) %>
+                </tbody>
+            </table>
+        </div>       
+        <% } else { %>
+            <div class="container my-5">
+                <div class="alert alert-danger align-middle text-center" role="alert">
+                    <h1>
+                        <%= msg %>
+                    </h1>
+                    <a href="/login" class="btn btn-primary mt-4">Iniciar sesión</a>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+                    <h2 class="mb-0">Lista de Cursos</h2>
+                </div>
+                <table class="table table-bordered table-hover text-center align-middle">
+                    <thead class="table table-bordered table-striped text-center mt-2">
+                        <tr class="bg-primary text-white">
+                            <th scope="col">Titulo</th>
+                            <th scope="col">Descripcion</th>
+                        </tr>
+                    </thead>
+                <tbody>
+                <% cursos.forEach((curso) => { %>
+                    <% if (curso.visibilidad == 1) { %>                           
+                        <tr>>
+                            <td><%= curso.titulo %></td>
+                            <td><%= curso.descripcion %></td>                                                             
+                        </tr>
+                    <% } %>
+                        
+                <% }) %>
+                </tbody>
+            </table>
+            </div>
+        <% } %>
+        <%- include ('partials/footer') %>
