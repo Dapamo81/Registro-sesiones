@@ -23,6 +23,7 @@
                                 <th scope="col">Visibilidad</th>
                                 <th scope="col">Acciones</th>
                             <% } %>
+                            <th scope="col">Inscrito</th>
                         </tr>
                     </thead>
                 <tbody>
@@ -32,7 +33,7 @@
                             <td><%= curso.referencia %></td>
                         <% } %>
                         <td><%= curso.titulo %></td>
-                        <td><%= curso.descripcion %></td>                       
+                        <td><%= curso.descripcion %></td>                   
                         <% if (rol == "admin") { %>
                             <td><%= curso.visibilidad %></td>
                             <td class="d-flex justify-content-center gap-2">                                

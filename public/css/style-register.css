@@ -46,7 +46,7 @@ label {
 input[type="text"],
 input[type="password"],
 select {
-    width: 90%;
+    width: 100%;
     padding: 12px 15px;
     margin-bottom: 15px;
     border: 1px solid #ccc;

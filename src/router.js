@@ -7,6 +7,28 @@ const db = require("../database/db");
 const { body, validation, validationResult } = require("express-validator");
 const crud = require("./controllers"); // para usar las operaciones CRUD
 
+//9 funciones
+    //verificamos sesion
+function VerficarSession(req, res, next) {
+    if (req.session.loggedin) {
+        next(); // si la sesion esta activa, continua con la siguiente funcion
+    } else {
+        res.redirect("login");
+    }
+}
+
+    //verificar Admin
+
+function VerificarAdmin(req, res, next) {
+    //operador de encadenamiento opcional (?.) para evitar errores si req.session es undefined
+    if (req.session?.loggedin && req.session?.rol === "admin") {
+        next(); // si la sesion esta activa y el rol es admin, continua con la siguiente funcion
+    } else {
+        res.redirect("/login");
+    }
+}
+    
+
 //9 4 definimos una ruta de entrada (para enviar las vistas)
 
 router.get("/", (req, res) => {
@@ -155,9 +177,11 @@ router.get("/editUser/:ref", (req, res) => {
                 });
             }
         }
-    );
+    ); 
 });
 
+
+    //Creamos la ruta de delete para cursos 
 router.get("/delete/:ref", (req, res) => {
     const ref = req.params.ref;
     db.query(
@@ -173,6 +197,75 @@ router.get("/delete/:ref", (req, res) => {
     );
 });
 
+    //Creamos ruta de soporte
+router.get("/soporte",VerficarSession, (req, res) => {
+    res.render("soporte", {
+        user: {
+            username: req.session.user || req.session.name,
+            rol: req.session.rol,
+        }
+    });
+});
+
+    // Api que optiene el historial
+
+router.get("/api/mensajes", VerificarAdmin, (req, res) => {
+    // const usuario = req.session.con; // usuario conectado
+    const usuario = req.query.con;
+
+    if(!usuario){
+        return res.status(401).json({ error: "Falta el parámetro del usuario" });
+    }
+
+    const sql = "SELECT de_usuario, para_usuario, mensaje, fecha  FROM mensajes WHERE (de_usuario = ? OR para_usuario = ?) ORDER BY fecha ASC";
+    db.query(sql, [usuario, usuario], (error, results) => {
+        if (error) {
+            return res.status(500).json({ error: "Error del servidor" });
+            // throw error;
+            console.error("Error al obtener los mensajes:", error);
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+    //Api mostrar mensajes propios
+router.get("/api/mensajes/mios", VerficarSession, (req, res) => {
+    const usuario = req.session.user; // usuario conectado
+
+    if(!req.session?.loggedin || !usuario){
+        return res.status(401).json({ error: "Necesitas estar logeado" });
+    } 
+    
+    const sql = "SELECT de_usuario, para_usuario, mensaje FROM mensajes WHERE (de_usuario = ? OR para_usuario = ?) ORDER BY fecha ASC";
+    db.query(sql, [usuario, usuario], (error, results) => {
+        if (error) {
+            console.log("Error al obtener los mensajes:", error);
+            throw error;
+        } else {
+            res.json(results);
+        }
+    })
+
+});
+
+    //Api usuarios que han escrito mensajes
+router.get("/api/usuarios-conversaciones", VerificarAdmin, (req, res) => {
+    const sql =
+    "SELECT DISTINCT usuario FROM ( SELECT de_usuario AS usuario FROM mensajes WHERE para_usuario IN (SELECT usuario FROM usuarios WHERE rol = 'admin') UNION SELECT para_usuario AS usuario FROM mensajes WHERE de_usuario IN (SELECT usuario FROM usuarios WHERE rol = 'admin') ) AS conversaciones WHERE usuario NOT IN (SELECT usuario FROM usuarios WHERE rol = 'admin')";
+
+    db.query(sql, (error, results) => {
+        if (error) {
+            console.error("Error al obtener los usuarios:", error);
+            throw error;
+        } else {
+            const usuarios = results.map(row => row.usuario);
+            res.json(usuarios);
+
+        }
+    });
+});
+    //Creamos la ruta de deleteUser 
 router.get("/deleteUser/:ref", (req, res) => {
     const ref = req.params.ref;
     db.query(
@@ -189,7 +282,7 @@ router.get("/deleteUser/:ref", (req, res) => {
 });
 
 //9 8 definimos las rutas de post
-//  definimos las rutas insert
+    //  definimos las rutas insert
 
 router.post(
     "/register",
@@ -265,7 +358,7 @@ router.post(
     }
 );
 
-// definimos la ruta de login
+    // definimos la ruta de login
 router.post("/auth", async (req, res) => {
     const user = req.body.user;
     const pass = req.body.pass;
@@ -297,6 +390,7 @@ router.post("/auth", async (req, res) => {
                 } else {
                     req.session.loggedin = true;
                     req.session.name = results[0].nombre;
+                    req.session.user = results[0].usuario;
                     req.session.rol = results[0].rol;
                     // res.send("El usuario se ha logeado correctamente");
                     
@@ -329,13 +423,60 @@ router.post("/auth", async (req, res) => {
     }
 });
 
-// Ruta de cierre de sesion
+    // definimos la ruta de saveUsers
+
+    router.post("/editUser/:ref", (req, res) => { 
+        
+        const nuevaContrasena = req.body.nuevaContrasena; // desde el formulario
+        if (!nuevaContrasena || nuevaContrasena.length < 8) {
+            return res.status(400).send("La contraseña es demasiado corta.");
+        }
+
+        // Generar hash
+        const bcrypt = require('bcrypt');
+        const saltRounds = 10;
+
+        bcrypt.hash(nuevaContrasena, saltRounds, (hashErr, hash) => {
+            if (hashErr) {
+                console.error(hashErr);
+                return res.status(500).send("Error al generar hash de la contraseña.");
+            }
+
+            // Actualizar hash en la base de datos
+            db.query(
+                "UPDATE usuarios SET pass = ? WHERE id = ?",
+                [hash, ref],
+                (error, results) => {
+                    if (error) {
+                        console.error(error);
+                        return res.status(500).send("Error al actualizar la contraseña.");
+                    }
+                    // Opcional: redirigir o mandar respuesta de éxito
+                    res.redirect("/profile"); // o un mensaje de éxito
+                }
+            );
+        });
+    });
+    
+
+    // Ruta de cierre de sesion con regsession
+
+// router.get("/logout", (req, res) => {
+//     // req.session.destroy(() => {
+//     //     res.redirect("/");
+//     // });
+//     req.session = null;
+//     res.redirect("/");
+
+// });
+
+    // Ruta de cierre de sesion con cookie-session
 
 router.get("/logout", (req, res) => {
-    req.session.destroy(() => {
-        res.redirect("/");
-    });
+    req.session= null; // Limpiar la sesión
+    res.redirect("/");
 });
+
 
 router.post("/saveCursos", crud.saveCursos);
 router.post("/saveUser", crud.saveUser); 

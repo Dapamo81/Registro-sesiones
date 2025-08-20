@@ -1,4 +1,6 @@
 const db= require("../database/db");
+const bcrypt = require('bcryptjs');
+
 
 /**
  * controlador para guardar los cursos
@@ -62,7 +64,7 @@ exports.saveUser = (req, res) => {
     const usuario = req.body.usuario;
     const nombre = req.body.nombre;
     const rol = req.body.rol;
-    const password = req.body.password;
+    const pass = req.body.pass;
     const email = req.body.email;
 
     // console.log(nombre+ " "+ precio, " "+ stock);
@@ -71,7 +73,7 @@ exports.saveUser = (req, res) => {
             usuario:usuario,
             nombre:nombre,
             rol:rol,
-            password:password,
+            pass:pass,
             email:email,
         }, 
         (error, results) => {
@@ -90,32 +92,51 @@ exports.saveUser = (req, res) => {
 
 
 
-exports.updateUser = (req, res) => {
+exports.updateUser = async (req, res) => {
     const ref = req.body.id;
     const usuario = req.body.usuario;
     const nombre = req.body.nombre;
     const rol = req.body.rol;
-    const password = req.body.password;
+    const pass = req.body.pass;
     const email = req.body.email;
 
+    // db.query(
+    //     "UPDATE usuarios SET ? WHERE id = ?",[{
+    //         usuario:usuario,
+    //         nombre:nombre,
+    //         rol:rol,
+    //         password:password,
+    //         email:email,
+    //     },
+    //     ref
+    //     ], 
+    //     (error, results) => {
+    //         if(error) {
+    //             console.log(error);
+    //             res.redirect("/admin");
+    //         } else {
+    //             console.log("Usuario actualizado correctamente");
+    //             res.redirect("/admin");
+    //         }
+    //     }
+    // );
+    let hashedPassword = pass;
+    if (pass && pass.length > 0) {
+    const saltRounds = 10;
+    hashedPassword = await bcrypt.hash(pass, saltRounds);
+    }
+
     db.query(
-        "UPDATE usuarios SET ? WHERE id = ?",[{
-            usuario:usuario,
-            nombre:nombre,
-            rol:rol,
-            password:password,
-            email:email,
-        },
-        ref
-        ], 
-        (error, results) => {
-            if(error) {
-                console.log(error);
-                res.redirect("/admin");
-            } else {
-                console.log("Usuario actualizado correctamente");
-                res.redirect("/admin");
-            }
+    "UPDATE usuarios SET usuario = ?, nombre = ?, rol = ?, pass = ?, email = ? WHERE id = ?",
+    [usuario, nombre, rol, hashedPassword, email, ref],
+    (error, results) => {
+        if (error) {
+        console.log(error);
+        return res.status(500).redirect("/admin");
+        } else {
+        console.log("Usuario actualizado correctamente");
+        return res.redirect("/admin");
         }
+    }
     );
 };
