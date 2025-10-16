@@ -1,11 +1,11 @@
 /* Estilos globales */
 body {
-    height: 100vh;
+    /* height: 100vh; */
     /* display: flex; */
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #74ebd5, #ACB6E5);
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: linear-gradient(135deg, #74ebd5, #acb6e5);
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     overflow-y: auto;
 }
 
@@ -15,7 +15,7 @@ body {
     margin: 15px auto;
     padding: 40px 30px;
     border-radius: 10px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     width: 100%;
     max-width: 400px;
     transition: transform 0.3s, box-shadow 0.3s;
@@ -23,7 +23,7 @@ body {
 
 .register-form:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
 }
 
 /* Título */
@@ -73,44 +73,44 @@ select:focus {
 
 /* Cancelar */
 .button-container {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 15px;
 }
 
 .btn-cancel {
-  width: 100%;
-  padding: 12px;
-  background-color: #6a11cb;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
-  text-align: center;
-  text-decoration: none;
+    width: 100%;
+    padding: 12px;
+    background-color: #6a11cb;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    text-align: center;
+    text-decoration: none;
 }
 
 .btn-cancel:hover {
-  background-color: #8e2de2;
+    background-color: #8e2de2;
 }
 
 .btn-save {
-  width: 100%;
-  display: inline-block;
-  padding: 12px;
-  background-color: transparent;
-  color: #6a11cb;
-  border: 2px solid #6a11cb;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
+    width: 100%;
+    display: inline-block;
+    padding: 12px;
+    background-color: transparent;
+    color: #6a11cb;
+    border: 2px solid #6a11cb;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .btn-save:hover {
-  background-color: #6a11cb;
-  color: #fff;
+    background-color: #6a11cb;
+    color: #fff;
 }
