@@ -1,34 +1,36 @@
 {
-  "name": "registro-sesiones",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Dapamo81/Registro-sesiones.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Dapamo81/Registro-sesiones/issues"
-  },
-  "homepage": "https://github.com/Dapamo81/Registro-sesiones#readme",
-  "description": "",
-  "dependencies": {
-    "bcryptjs": "^3.0.2",
-    "cookie-parser": "^1.4.7",
-    "cookie-session": "^2.1.1",
-    "dotenv": "^16.5.0",
-    "ejs": "^3.1.10",
-    "express": "^5.1.0",
-    "express-ejs-layouts": "^2.5.1",
-    "express-session": "^1.18.1",
-    "express-validator": "^7.2.1",
-    "mysql2": "^3.14.1",
-    "socket.io": "^4.8.1",
-    "sweetalert2": "^11.6.13"
-  }
+    "name": "registro-sesiones",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node index.js",
+        "docs": "jsdoc -c jsdoc.json"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Dapamo81/Registro-sesiones.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Dapamo81/Registro-sesiones/issues"
+    },
+    "homepage": "https://github.com/Dapamo81/Registro-sesiones#readme",
+    "description": "",
+    "dependencies": {
+        "bcryptjs": "^3.0.2",
+        "cookie-parser": "^1.4.7",
+        "cookie-session": "^2.1.1",
+        "dotenv": "^16.5.0",
+        "ejs": "^3.1.10",
+        "express": "^5.1.0",
+        "express-ejs-layouts": "^2.5.1",
+        "express-session": "^1.18.1",
+        "express-validator": "^7.2.1",
+        "mysql2": "^3.14.1",
+        "socket.io": "^4.8.1",
+        "sweetalert2": "^11.6.13"
+    }
 }
